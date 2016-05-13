@@ -1,6 +1,6 @@
 """
 thunks for pydux
-original from https://github.com/aearon/redux-thunk
+original from https://github.com/gaearon/redux-thunk
 """
 
 
