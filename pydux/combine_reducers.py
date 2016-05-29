@@ -10,7 +10,7 @@ def combine_reducers(reducers):
         a new, combined reducer function
     """
     final_reducers = {key: reducer
-                      for key, reducer in reducers.iteritems()
+                      for key, reducer in reducers.items()
                       if hasattr(reducer, '__call__')}
 
     def combination(state=None, action=None):
@@ -19,7 +19,7 @@ def combine_reducers(reducers):
 
         has_changed = False
         next_state = {}
-        for key, reducer in final_reducers.iteritems():
+        for key, reducer in final_reducers.items():
             previous_state_for_key = state.get(key)
             next_state_for_key = reducer(previous_state_for_key, action)
             next_state[key] = next_state_for_key
