@@ -16,6 +16,17 @@ class ActionTypes(object):
     INIT = '@@redux/INIT'
 
 
+class StoreDict(dict):
+    def get_state(self):
+        return self['get_state']()
+    def subscribe(self, listener):
+        return self['subscribe'](listener)
+    def dispatch(self, action):
+        return self['dispatch'](action)
+    def replace_reducer(self, next_reducer):
+        return self['replace_reducer'](next_reducer)
+
+
 def create_store(reducer, initial_state=None, enhancer=None):
     """
     redux in a nutshell.
@@ -105,9 +116,9 @@ def create_store(reducer, initial_state=None, enhancer=None):
 
     dispatch({'type': ActionTypes.INIT})
 
-    return {
-        'dispatch': dispatch,
-        'subscribe': subscribe,
-        'get_state': get_state,
-        'replace_reducer': replace_reducer,
-    }
+    return StoreDict(
+        dispatch=dispatch,
+        subscribe=subscribe,
+        get_state=get_state,
+        replace_reducer=replace_reducer,
+    )
