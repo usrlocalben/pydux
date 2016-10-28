@@ -14,7 +14,7 @@ def get_version():
 setup(
     name='pydux',
     description="Python + Redux = Pydux",
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     url="http://github.com/benjamin9999/pydux/",
     version=get_version(),
     author='Benjamin Yates',
