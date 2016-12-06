@@ -1,5 +1,5 @@
 import unittest
-from pydux import compose
+from pydux.compose import compose
 
 class TestComposeMethod(unittest.TestCase):
 
