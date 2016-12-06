@@ -1,3 +1,5 @@
+from functools import reduce
+
 def compose(*funcs):
     """
     chained function composition wrapper
