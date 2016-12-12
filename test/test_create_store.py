@@ -468,26 +468,6 @@ class TestCreateStoreMethod(unittest.TestCase):
             'text': 'Hello'
         }])
 
-    def test_accepts_enhancer_as_second_argument_if_no_initial_state(self):
-        def spy_enhancer(vanilla_create_store):
-            def enhancer(*args):
-                self.assertEqual(args[0], reducers['todos'])
-                self.assertEqual(args[1], None)
-                self.assertEqual(len(args), 2)
-                vanilla_store = vanilla_create_store(*args)
-                vanilla_store['dispatch'] = mock.MagicMock(side_effect=vanilla_store['dispatch'])
-                return vanilla_store
-            return enhancer
-
-        store = create_store(reducers['todos'], spy_enhancer)
-        action = add_todo('Hello')
-        store['dispatch'](action)
-        self.assertEqual(store['dispatch'].call_args_list, [mock.call(action)])
-        self.assertEqual(store['get_state'](), [{
-            'id': 1,
-            'text': 'Hello'
-        }])
-
     def test_throws_if_enhancer_is_neither_undefined_or_a_function(self):
         with self.assertRaises(Exception):
             create_store(reducers['todos'], None, {})
