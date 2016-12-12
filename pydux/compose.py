@@ -15,7 +15,7 @@ def compose(*funcs):
         a new function composed of chained calls to *args
     """
     if not funcs:
-        return lambda *args: args
+        return lambda *args: args[0] if args else None
     last = funcs[-1]
     rest = funcs[0:-1]
     return lambda *args: reduce(lambda ax, func: func(ax),
