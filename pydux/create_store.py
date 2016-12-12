@@ -44,7 +44,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
     if enhancer is not None:
         if not hasattr(enhancer, '__call__'):
             raise TypeError('Expected the enhancer to be a function.')
-        return enhancer(create_store)(reducer)
+        return enhancer(create_store)(reducer, initial_state)
 
     if not hasattr(reducer, '__call__'):
         raise TypeError('Expected the reducer to be a function.')
@@ -88,8 +88,8 @@ def create_store(reducer, initial_state=None, enhancer=None):
             raise TypeError('Actions must be a dict. '
                             'Use custom middleware for async actions.')
 
-        if 'type' not in action:
-            raise ValueError('Actions must have a "type" property. '
+        if action.get('type') is None:
+            raise ValueError('Actions must have a non-None "type" property. '
                              'Have you misspelled a constant?')
 
         if is_dispatching[0]:
@@ -97,7 +97,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
 
         try:
             is_dispatching[0] = True
-            current_state[0] = reducer(current_state[0], action)
+            current_state[0] = current_reducer[0](current_state[0], action)
         finally:
             is_dispatching[0] = False
 
@@ -109,7 +109,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
 
     def replace_reducer(next_reducer):
         if not hasattr(next_reducer, '__call__'):
-            raise TypeError('Expected the next_reducer to be a function')
+            raise TypeError('Expected next_reducer to be a function')
 
         current_reducer[0] = next_reducer
         dispatch({'type': ActionTypes.INIT})
