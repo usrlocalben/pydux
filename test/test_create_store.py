@@ -304,11 +304,10 @@ class TestCreateStoreMethod(unittest.TestCase):
         listener_2 = mock.MagicMock()
         listener_3 = mock.MagicMock()
 
-        listener_3_added = False
+        listener_3_added = [False]
         def maybe_add_third_listener():
-            nonlocal listener_3_added
-            if not listener_3_added:
-                listener_3_added = True
+            if not listener_3_added[0]:
+                listener_3_added[0] = True
                 store['subscribe'](lambda: listener_3())
 
         store['subscribe'](lambda: listener_1())
@@ -332,18 +331,17 @@ class TestCreateStoreMethod(unittest.TestCase):
         listener_3 = mock.MagicMock()
         listener_4 = mock.MagicMock()
 
-        unsubscribe_4 = None
-        unsubscribe_1 = None
+        unsubscribe_4 = [None]
+        unsubscribe_1 = [None]
         def callback_for_listener_1():
-            nonlocal unsubscribe_1, unsubscribe_4
             listener_1()
             self.assertEqual(len(listener_1.call_args_list), 1)
             self.assertEqual(len(listener_2.call_args_list), 0)
             self.assertEqual(len(listener_3.call_args_list), 0)
             self.assertEqual(len(listener_4.call_args_list), 0)
 
-            unsubscribe_1()
-            unsubscribe_4 = store['subscribe'](listener_4)
+            unsubscribe_1[0]()
+            unsubscribe_4[0] = store['subscribe'](listener_4)
             store['dispatch'](unknown_action())
 
             self.assertEqual(len(listener_1.call_args_list), 1)
@@ -351,7 +349,7 @@ class TestCreateStoreMethod(unittest.TestCase):
             self.assertEqual(len(listener_3.call_args_list), 1)
             self.assertEqual(len(listener_4.call_args_list), 1)
 
-        unsubscribe_1 = store['subscribe'](callback_for_listener_1)
+        unsubscribe_1[0] = store['subscribe'](callback_for_listener_1)
         store['subscribe'](listener_2)
         store['subscribe'](listener_3)
 
@@ -361,7 +359,7 @@ class TestCreateStoreMethod(unittest.TestCase):
         self.assertEqual(len(listener_3.call_args_list), 2)
         self.assertEqual(len(listener_4.call_args_list), 1)
 
-        unsubscribe_4()
+        unsubscribe_4[0]()
         store['dispatch'](unknown_action())
         self.assertEqual(len(listener_1.call_args_list), 1)
         self.assertEqual(len(listener_2.call_args_list), 3)
@@ -436,7 +434,7 @@ class TestCreateStoreMethod(unittest.TestCase):
 
         with self.assertRaises(Exception) as e:
             store['dispatch']({ 'type': None })
-        self.assertTrue('Actions may not have an undefined "type"' in str(e.exception))
+        self.assertTrue('Actions must have a non-None "type" property.' in str(e.exception))
 
     def test_does_not_throw_if_action_type_is_falsy(self):
         store = create_store(reducers['todos'])
@@ -487,7 +485,7 @@ class TestCreateStoreMethod(unittest.TestCase):
     def test_throws_if_next_reducer_is_not_a_function(self):
         store = create_store(reducers['todos'])
         with self.assertRaises(Exception) as e:
-            store['replace_reducer']()
+            store['replace_reducer']('not a function')
         self.assertTrue('Expected next_reducer to be a function' in str(e.exception))
 
         try:

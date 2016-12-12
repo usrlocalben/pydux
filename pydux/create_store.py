@@ -88,8 +88,8 @@ def create_store(reducer, initial_state=None, enhancer=None):
             raise TypeError('Actions must be a dict. '
                             'Use custom middleware for async actions.')
 
-        if 'type' not in action:
-            raise ValueError('Actions must have a "type" property. '
+        if action.get('type') is None:
+            raise ValueError('Actions must have a non-None "type" property. '
                              'Have you misspelled a constant?')
 
         if is_dispatching[0]:
@@ -109,7 +109,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
 
     def replace_reducer(next_reducer):
         if not hasattr(next_reducer, '__call__'):
-            raise TypeError('Expected the next_reducer to be a function')
+            raise TypeError('Expected next_reducer to be a function')
 
         current_reducer[0] = next_reducer
         dispatch({'type': ActionTypes.INIT})
