@@ -15,7 +15,7 @@ setup(
     name='pydux',
     description="Python + Redux = Pydux",
     long_description=open('README.md').read(),
-    url="http://github.com/benjamin9999/pydux/",
+    url="http://github.com/usrlocalben/pydux/",
     version=get_version(),
     author='Benjamin Yates',
     author_email='benjamin@rqdq.com',
