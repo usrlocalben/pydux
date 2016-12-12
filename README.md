@@ -73,6 +73,6 @@ store.dispatch({ 'type': 'DECREMENT' })
 
 [urwid_todos](https://github.com/usrlocalben/urwid_todos) is a reimplementation of the Redux [todos](http://redux.js.org/docs/basics/ExampleTodoList.html) example made with [urwid_pydux](https://github.com/usrlocalben/urwid_pydux).
 
-##### Todo
+##### Acknowledgements
 
-+ Reimplement the tests :)
+The initial test suite was imported from [python-redux](https://github.com/ebrakke/python-redux), a Redux implementation for Python 3.4+.
