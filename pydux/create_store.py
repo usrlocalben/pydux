@@ -44,7 +44,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
     if enhancer is not None:
         if not hasattr(enhancer, '__call__'):
             raise TypeError('Expected the enhancer to be a function.')
-        return enhancer(create_store)(reducer)
+        return enhancer(create_store)(reducer, initial_state)
 
     if not hasattr(reducer, '__call__'):
         raise TypeError('Expected the reducer to be a function.')
