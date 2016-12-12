@@ -16,6 +16,10 @@ def compose(*funcs):
     """
     if not funcs:
         return lambda *args: args[0] if args else None
+
+    if len(funcs) == 1:
+        return funcs[0]
+
     last = funcs[-1]
     rest = funcs[0:-1]
     return lambda *args: reduce(lambda ax, func: func(ax),
