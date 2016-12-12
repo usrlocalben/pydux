@@ -97,7 +97,7 @@ def create_store(reducer, initial_state=None, enhancer=None):
 
         try:
             is_dispatching[0] = True
-            current_state[0] = reducer(current_state[0], action)
+            current_state[0] = current_reducer[0](current_state[0], action)
         finally:
             is_dispatching[0] = False
 
