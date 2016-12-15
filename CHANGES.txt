@@ -1,3 +1,13 @@
+Version 0.2.0
+2016-12-15
+- test suite added
+- added object-like access to store methods
+- added combine_reducers() sanity checking
+- fixed compose()'s default identity function
+- compose() optimization when len(args) is 1
+- fixed store behavior after calling replace_reducer()
+- fixed initial state not being passed to enhancers
+
 Version 0.1.0
 2016-05-03
 - First release on PyPI
