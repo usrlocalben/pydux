@@ -10,7 +10,7 @@ def add_todo(text):
 def add_todo_if_empty(text):
     def anon(dispatch, get_state):
         if len(get_state()) == 0:
-            add_todo(text)
+            dispatch(add_todo(text))
     return anon
 
 def dispatch_in_middle(bound_dispatch_fn):
