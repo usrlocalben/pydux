@@ -32,5 +32,31 @@ class TestApplyMiddleware(unittest.TestCase):
                          [dict(id=1, text='Use Redux'), dict(id=2, text='Flux FTW!')])
 
 
+    def test_works_with_thunk_middleware(self):
+        store = apply_middleware(thunk)(create_store)(reducers['todos'])
+
+        store.dispatch(add_todo_if_empty('Hello'))
+        self.assertEqual(store['get_state'](), [
+            {
+                'id': 1,
+                'text': 'Hello'
+            }
+        ])
+
+        store['dispatch'](add_todo('World'))
+        self.assertEqual(store['get_state'](), [
+            {
+                'id': 1,
+                'text': 'Hello'
+            },
+            {
+                'id': 2,
+                'text': 'World'
+            }
+        ])
+
+        ##TODO: add_todo_async
+
+
 if __name__ == '__main__':
     unittest.main()
