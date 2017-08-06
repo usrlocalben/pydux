@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import six
 import random
 from string import ascii_letters
 
@@ -15,7 +14,7 @@ def get_undefined_state_error_message(key, action):
             'state.' % (action_name, key))
 
 def assert_reducer_sanity(reducers):
-    for key, reducer in six.iteritems(reducers):
+    for key, reducer in reducers.items():
         initial_state = reducer(None, {'type': ActionTypes.INIT})
 
         if initial_state is None:
